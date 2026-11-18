@@ -18,6 +18,12 @@ An independent machine learning project that uses XGBoost to classify the binary
 
 3. Open `diabetes_classification.ipynb` and choose **Run → Restart Kernel and Run All Cells**. The grid search evaluates 144 configurations across five folds.
 
+## Accuracy-first hyperparameter search
+
+Open [the accuracy-first notebook](diabetes_classification_accuracy.ipynb) to compare 18 randomly sampled XGBoost configurations and six logistic regression configurations. The inner search tests seven cutoffs on the same validation scores and selects the model and cutoff by overall accuracy. Four inner folds require 96 candidate fits per search. Five outer folds evaluate the selection procedure on the development rows and compare it with default XGBoost and a majority-class baseline. Sensitivity and specificity show the effect of optimizing for accuracy.
+
+On the 614 development rows, pooled outer-fold accuracy was 65.1% for the majority baseline, 75.2% for default XGBoost, 75.7% for joint model-and-cutoff selection, and 76.4% when the jointly selected models used a fixed 0.50 cutoff. That last comparison isolates the cutoff on the same selected models. Joint cutoff tuning recovered nine more positive cases and added thirteen false positives relative to 0.50. The earlier 154 test rows were excluded from this comparison.
+
 ## Second-generation experiment
 
 Open [the v2 notebook](diabetes_classification_v2.ipynb) in the same environment and run all cells. It reserves 20% of the data for a shared stratified test set and uses the remaining rows for development. It compares an 80-row XGBoost baseline, the same baseline trained on all development rows, and a model selected from regularized logistic regression and shallow XGBoost candidates.

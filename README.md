@@ -18,6 +18,25 @@ An independent machine learning project that uses XGBoost to classify the binary
 
 3. Open `diabetes_classification.ipynb` and choose **Run → Restart Kernel and Run All Cells**. The grid search evaluates 144 configurations across five folds.
 
+## Second-generation experiment
+
+Open [the v2 notebook](diabetes_classification_v2.ipynb) in the same environment and run all cells. It reserves 20% of the data for a shared stratified test set and uses the remaining rows for development. It compares an 80-row XGBoost baseline, the same baseline trained on all development rows, and a model selected from regularized logistic regression and shallow XGBoost candidates.
+
+The inner cross-validation search selects the model by average precision. The outer cross-validation loop selects a cutoff by balanced accuracy. The test comparison reports both ranking quality and the effect of the tuned cutoff on false positives and missed cases.
+
+### V2 results on the project CSV
+
+The fixed split used 614 development rows and 154 test rows. Cross-validation selected logistic regression and a cutoff of 0.3386. All values below come from the same test set.
+
+| Model and cutoff | Average precision | Balanced accuracy | Sensitivity | Specificity | False positives | False negatives |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| XGBoost, 80 rows, 0.50 | 0.625 | 0.706 | 61.1% | 80.0% | 20 | 21 |
+| XGBoost, full development set, 0.50 | 0.676 | 0.726 | 59.3% | 86.0% | 14 | 22 |
+| Logistic regression, 0.50 | 0.673 | 0.727 | 70.4% | 75.0% | 25 | 16 |
+| Logistic regression, tuned cutoff | 0.673 | 0.749 | 88.9% | 61.0% | 39 | 6 |
+
+Using more rows improved XGBoost's average precision. Lowering the logistic cutoff caught 10 more positives than its default cutoff and added 14 false positives. Full-data XGBoost had slightly higher test average precision than logistic regression. These estimates come from one split of a small dataset.
+
 ## Experiment
 
 1. Treat zeros in five measurement columns as missing values.

@@ -1,0 +1,14 @@
+# Local Python and Jupyter files
+.venv/
+venv/
+__pycache__/
+.ipynb_checkpoints/
+.env
+.env.*
+.DS_Store
+
+# Keep source data and generated outputs local
+/data/*
+!/data/README.md
+/diabetes.csv
+/artifacts/
